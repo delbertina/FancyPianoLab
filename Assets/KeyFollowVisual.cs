@@ -10,7 +10,7 @@ public class KeyFollowVisual : MonoBehaviour
     public Vector3 localAxis;
     public float resetSpeed = 5;
     public AudioClip noteSound;
-    public float notePitch;
+    public float semitones;
     //public float followAngleThreshold = 180;
 
     private AudioSource noteAudioSource;
@@ -24,11 +24,13 @@ public class KeyFollowVisual : MonoBehaviour
     private XRBaseInteractable interactable;
     private bool isFollowing = false;
 
+    private static float pitchScale = Mathf.Pow(2f, 1.0f / 12f);
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         noteAudioSource = GetComponent<AudioSource>();
-        noteAudioSource.pitch = notePitch;
+        noteAudioSource.pitch = Mathf.Pow(pitchScale, semitones);
         initialLocalPos = visualTarget.localPosition;
 
         interactable = GetComponent<XRBaseInteractable>();
