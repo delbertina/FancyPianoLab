@@ -3,13 +3,17 @@ using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
+[RequireComponent(typeof(AudioSource))]
 public class KeyFollowVisual : MonoBehaviour
 {
     public Transform visualTarget;
     public Vector3 localAxis;
     public float resetSpeed = 5;
+    public AudioClip noteSound;
+    public float notePitch;
     //public float followAngleThreshold = 180;
 
+    private AudioSource noteAudioSource;
     private bool freeze = false;
 
     private Vector3 initialLocalPos;
@@ -23,6 +27,8 @@ public class KeyFollowVisual : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        noteAudioSource = GetComponent<AudioSource>();
+        noteAudioSource.pitch = notePitch;
         initialLocalPos = visualTarget.localPosition;
 
         interactable = GetComponent<XRBaseInteractable>();
@@ -87,6 +93,7 @@ public class KeyFollowVisual : MonoBehaviour
         if(hover.interactorObject is XRPokeInteractor)
         {
             freeze = true;
+            noteAudioSource.PlayOneShot(noteSound);
         }
     }
 }
