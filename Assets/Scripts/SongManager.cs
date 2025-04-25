@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class SongManager : MonoBehaviour
 {
+
+
+
+
     [System.Serializable]
     public class NoteObject
     {
@@ -21,11 +25,11 @@ public class SongManager : MonoBehaviour
     [SerializeField] public List<NoteObject> notes = new List<NoteObject>();
     //[SerializeField] public List<Note> songNotes = new List<Note>();
 
-    int[] songNotes = new int[] { 0, 1, 2, 3, 4 }; // Array of note indices to spawn
-    int[] noteDurations = new int[] { 1, 1, 2, 1, 1 }; // Array of note indices to spawn
+    int[] songNotes = new int[] { 5, 3, 3, 4, 2, 2, 1, 2, 3, 4, 5, 5, 5, 3, 3, 4, 4, 2, 2, 1, 2, 1 }; // Array of note indices to spawn
+    float[] noteDurations = new float[] { 1, 0.5f, 0.5f, 1, .5f, .5f, .5f, .5f, .5f, .5f, 2, .5f, .5f, .5f, .5f, .5f, .5f, .5f, .5f, 1, 1, 2 }; // Array of note indices to spawn
 
     int currentNoteIndex = 0; // Index of the current note to spawn
-    int nextNoteTime = 4; // Time to spawn the next note
+    float nextNoteTime = 4; // Time to spawn the next note
 
 
     float noteSpeed = 1f; // Speed of the notes
@@ -35,10 +39,17 @@ public class SongManager : MonoBehaviour
 
     List<GameObject> spawnedNotes = new List<GameObject>();
 
+    [ContextMenu("Start song in 5s")]
+    private void StartSong()
+    {
+        nextNoteTime = 5f;
+        time = 0f;
+        currentNoteIndex = 0;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        GameObject newNote = Instantiate(notes[currentNoteIndex].notePrefab, notes[currentNoteIndex].spawnPoint.position, notes[currentNoteIndex].spawnPoint.rotation);
+        GameObject newNote = Instantiate(notes[songNotes[currentNoteIndex] - 1].notePrefab, notes[songNotes[currentNoteIndex] - 1].spawnPoint.position, notes[songNotes[currentNoteIndex] - 1].spawnPoint.rotation);
         newNote.SetActive(true);
         spawnedNotes.Add(newNote);
     }
@@ -68,7 +79,7 @@ public class SongManager : MonoBehaviour
                 return;
             }
             // Spawn the next note
-            GameObject newNote = Instantiate(notes[currentNoteIndex].notePrefab, notes[currentNoteIndex].spawnPoint.position, notes[currentNoteIndex].spawnPoint.rotation);
+            GameObject newNote = Instantiate(notes[songNotes[currentNoteIndex] - 1].notePrefab, notes[songNotes[currentNoteIndex] - 1].spawnPoint.position, notes[songNotes[currentNoteIndex] - 1].spawnPoint.rotation);
             newNote.SetActive(true);
             spawnedNotes.Add(newNote);
 
