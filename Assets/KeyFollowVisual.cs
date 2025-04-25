@@ -44,6 +44,20 @@ public class KeyFollowVisual : MonoBehaviour
         if (hover.interactorObject is XRPokeInteractor) {
             XRPokeInteractor interactor = (XRPokeInteractor)hover.interactorObject;
 
+            Vector3 pokeDirection = (visualTarget.position - interactor.attachTransform.position).normalized;
+
+            // Convert pokeDirection to local space of the visual target
+            Vector3 localPokeDirection = visualTarget.InverseTransformDirection(pokeDirection);
+
+            // Check if the poke is coming from the correct side (same direction as localAxis)
+            float dot = Vector3.Dot(localPokeDirection, localAxis.normalized);
+            if (dot < 0) // Poke is coming from the wrong direction (e.g. from below)
+            {
+                isFollowing = false;
+                freeze = true;
+                return;
+            }
+
             isFollowing = true;
             freeze = false;
 
@@ -54,10 +68,10 @@ public class KeyFollowVisual : MonoBehaviour
 
             // not really working, don't quite understand how to fix the issue with touch under
             //if(pokeAngle > followAngleThreshold)
-           // {
-           //    isFollowing = false;
-           //     freeze = true;
-           // }
+            // {
+            //    isFollowing = false;
+            //     freeze = true;
+            // }
         }
     }
 
